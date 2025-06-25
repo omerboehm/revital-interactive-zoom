@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Selection Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+    }
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+    .image {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      cursor: grab;
+    }
+    #bin {
+      width: 200px;
+      height: 200px;
+      background: #f0f0f0;
+      border: 2px dashed #888;
+      border-radius: 10px;
+      margin: 0 auto;
+      text-align: center;
+      line-height: 200px;
+      font-size: 24px;
+      color: #444;
+    }
+    #result {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 18px;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Drag the 5 correct images into the bin 🗑️</h2>
+
+<div class="gallery" id="gallery">
+  <img src="https://placekitten.com/100/100?image=1" id="img0" class="image" draggable="true">
+  <img src="https://placekitten.com/100/100?image=2" id="img1" class="image" draggable="true">
+  <img src="https://placekitten.com/100/100?image=3" id="img2" class="image" draggable="true">
+  <img src="https://placekitten.com/100/100?image=4" id="img3" class="image" draggable="true">
+  <img src="https://placekitten.com/100/100?image=5" id="img4" class="image" draggable="true">
+  <img src="https://placekitten.com/100/100?image=6" id="img5" class="image" draggable="true">
+  <img src="https://placekitten.com/100/100?image=7" id="img6" class="image" draggable="true">
+  <img src="https://placekitten.com/100/100?image=8" id="img7" class="image" draggable="true">
+  <img src="https://placekitten.com/100/100?image=9" id="img8" class="image" draggable="true">
+  <img src="https://placekitten.com/100/100?image=10" id="img9" class="image" draggable="true">
+</div>
+
+<div id="bin">Drop Here</div>
+
+<div id="result"></div>
+
+<script>
+  const correctImages = ['img1', 'img3', 'img5', 'img6', 'img9'];
+  let selected = [];
+
+  document.querySelectorAll('.image').forEach(img => {
+    img.addEventListener('dragstart', e => {
+      e.dataTransfer.setData("text/plain", img.id);
+    });
+  });
+
+  const bin = document.getElementById('bin');
+
+  bin.addEventListener('dragover', e => {
+    e.preventDefault();
+    bin.style.background = '#d0ffd0';
+  });
+
+  bin.addEventListener('dragleave', () => {
+    bin.style.background = '#f0f0f0';
+  });
+
+  bin.addEventListener('drop', e => {
+    e.preventDefault();
+    const id = e.dataTransfer.getData("text/plain");
+
+    if (!selected.includes(id)) {
+      selected.push(id);
+    }
+
+    bin.textContent = `${selected.length}/5 images selected`;
+    bin.style.background = '#f0f0f0';
+
+    if (selected.length === 5) {
+      let score = selected.filter(id => correctImages.includes(id)).length;
+      document.getElementById('result').textContent = `You selected ${score}/5 correct images!`;
+    }
+  });
+</script>
+
+</body>
+</html>
