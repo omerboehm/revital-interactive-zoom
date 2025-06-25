@@ -36,11 +36,16 @@
       margin: 0 auto;
       text-align: center;
       position: relative;
+      overflow: hidden;
     }
-    #bin img {
+    #bin img.background {
       width: 100%;
       height: 100%;
       object-fit: contain;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
     }
     #binText {
       position: absolute;
@@ -54,6 +59,27 @@
       font-size: 24px;
       color: #444;
       pointer-events: none;
+      z-index: 1;
+    }
+    .bin-image {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border: 2px solid #444;
+      border-radius: 6px;
+      margin: 2px;
+      z-index: 2;
+      position: relative;
+    }
+    #binItems {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      z-index: 2;
     }
     #result {
       margin-top: 20px;
@@ -81,10 +107,10 @@
 </div>
 
 <div id="bin">
-  <img src="img/ship.png" alt="ship">
+  <img class="background" src="img/ship.png" alt="Bin">
   <div id="binText">Drop Here</div>
+  <div id="binItems"></div>
 </div>
-
 
 <div id="result"></div>
 
@@ -99,6 +125,8 @@
   });
 
   const bin = document.getElementById('bin');
+  const binText = document.getElementById('binText');
+  const binItems = document.getElementById('binItems');
 
   bin.addEventListener('dragover', e => {
     e.preventDefault();
@@ -115,9 +143,15 @@
 
     if (!selected.includes(id)) {
       selected.push(id);
+      const originalImg = document.getElementById(id);
+      const clone = originalImg.cloneNode(true);
+      clone.classList.remove('image');
+      clone.classList.add('bin-image');
+      clone.setAttribute('draggable', 'false');
+      binItems.appendChild(clone);
     }
 
-    bin.textContent = `${selected.length}/5 images selected`;
+    binText.textContent = `${selected.length}/5 images selected`;
     bin.style.background = '#f0f0f0';
 
     if (selected.length === 5) {
