@@ -35,9 +35,25 @@
       border-radius: 10px;
       margin: 0 auto;
       text-align: center;
-      line-height: 200px;
+      position: relative;
+    }
+    #bin img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    #binText {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 24px;
       color: #444;
+      pointer-events: none;
     }
     #result {
       margin-top: 20px;
@@ -52,8 +68,8 @@
 <h2>Drag the 5 correct images into the bin 🗑️</h2>
 
 <div class="gallery" id="gallery">
-  <img src="img/0.jpg" id="img0" class="image" draggable="true">
-  <img src="img/1.jpg"  id="img1" class="image" draggable="true">
+  <img src="img/0.png" id="img0" class="image" draggable="true">
+  <img src="img/one.jpg"  id="img1" class="image" draggable="true">
   <img src="img/2.jpg" id="img2" class="image" draggable="true">
   <img src="img/3.jpg" id="img3" class="image" draggable="true">
   <img src="img/4.jpg" id="img4" class="image" draggable="true">
@@ -64,7 +80,10 @@
   <img src="img/9.jpg" id="img9" class="image" draggable="true">
 </div>
 
-<div id="bin" src="img/ship.png" >Drop Here></div>
+<div id="bin">
+  <img src="img/ship.png" alt="ship">
+  <div id="binText">Drop Here</div>
+</div>
 
 
 <div id="result"></div>
